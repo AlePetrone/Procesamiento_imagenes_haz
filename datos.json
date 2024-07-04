@@ -1,0 +1,9 @@
+[
+    {
+        "archivo": "imagenes",
+        "uid": 3,
+        "ruta": "img1.jpg",
+        "imagen": "imagenes/img1.jpg",
+        "parametros": "esto es un parametro"
+    }
+]

@@ -56,7 +56,7 @@ def diferencia_imagenes (imagen1,nombre_1, imagen2,nombre_2):
 
 def otsu (imagen, nombre):
     h, s, v = cv.split(imagen)
-    ret3,th3 = cv.threshold(v ,0,255,cv.THRESH_BINARY_INV + cv.THRESH_OTSU)
+    ret3,th3 = cv.threshold(v ,0,255,cv.THRESH_BINARY_INV + cv.THRESH_OTSU) # revisar 
     nombre_salida = f"{os.path.splitext(nombre)[0]}-otsu.jpg"
     logging.info(f"Se proceso  correctamente {nombre_salida}")
     return th3, nombre_salida
@@ -211,7 +211,7 @@ def limite_binario (imagen, linea):
 
 
 
-def limitar_valores_vectorial(valores):
+def suavizado(valores):
     valor_maximo = np.max(valores)
    
     limite = valor_maximo*0.97
@@ -224,15 +224,14 @@ def limitar_valores_vectorial(valores):
     
     return valores_limitados
 
-def promedio_vectores_vectorizado(imagen, linea):
+def promedio_vectorizado(imagen, linea):
     y = np.array(imagen[:, :, 2], dtype=np.float64)
     
-    if linea -2 & linea +2 == 0: 
-        columnas = [linea, linea + 1, linea - 1, linea + 2, linea - 2]
+    columnas = [linea, linea + 1, linea - 1, linea + 2, linea - 2]
+    mask = np.isin(np.arange(y.shape[1]), columnas)
     
-        mask = np.isin(np.arange(y.shape[1]), columnas)
-    
-        columnas_seleccionadas = y[:, mask]
+    columnas_seleccionadas = y[:, mask]
+    print("Columnas seleccionadas : ", columnas_seleccionadas)           
     
     columna_y = columnas_seleccionadas.mean(axis=1)
     
@@ -241,5 +240,21 @@ def promedio_vectores_vectorizado(imagen, linea):
 
 
 
+def filtro(img):
+    # filtro
+    sigma =10
+    x = np.linspace(0,2*sigma,2*sigma+1)
+    h = np.exp(-((x-sigma)/sigma)**2)
+    
+    img_f = np.array(img,dtype=float)
+    return img_f,h
 
 
+def suavizar(img_f,h):
+    res=np.zeros_like(img_f)
+    s = int((len(h)-1)/2)
+    for i in range(np.shape(img_f)[1]):
+        vect = np.roll(np.concatenate((h,np.zeros(np.shape(img_f)[1]))),i-s)[:np.shape(img_f)[1]]
+        prom = np.matmul(img_f, vect.T)/np.sum(vect)
+        res[:,i]=prom
+    return res
