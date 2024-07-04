@@ -130,6 +130,9 @@ def encontrar_puntos_maximos(imagen_hsv, lineas):
     return v_maximos
 
 
+def Solo_v (img) :
+    v = np.max(img, axis=2)
+    return v
 
 def funcion_ajuste(x, A, sigma, offset,centro):
     return A/sigma * np.exp(-1/2*((x-centro)/sigma)**2) + offset
