@@ -261,3 +261,8 @@ def suavizar(img_f,h):
         prom = np.matmul(img_f, vect.T)/np.sum(vect)
         res[:,i]=prom
     return res
+
+def Solo_v (img) :
+    v = np.max(img, axis=2)
+    return v
+ 
