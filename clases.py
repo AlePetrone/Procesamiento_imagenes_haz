@@ -29,8 +29,7 @@ class Preproceso_imagen:
     def __init__(self, imagen):
         self.leida= cv.imread(imagen)
         # self.recortada=recortar_imagen(self.leida, x=720, y= 200, ancho=800, alto = 300 )  
-        self.hsv = cv.cvtColor(self.leida, cv.COLOR_BGR2HSV)
-        self.cortes =corte(self.leida) 
+        self.hsv = Solo_v(imagen)
 
 
 
